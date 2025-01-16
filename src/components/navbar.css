@@ -1,0 +1,49 @@
+.navbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.rightIcons {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.profileInfo {
+  display: flex;
+  align-items: center;
+}
+
+.profileInfo img {
+  border-radius: 50%;
+  height: 25px;
+  margin-right: 5px;
+  object-fit: cover;
+  width: 25px;
+}
+
+.notification {
+  position: relative;
+}
+
+.notification span {
+  align-items: center;
+  background: red;
+  border-radius: 50%;
+  display: flex;
+  font-size: 12px;
+  height: 1.6rem;
+  justify-content: center;
+  position: absolute;
+  right: -1rem;
+  top: -1rem;
+  width: 1.6rem;
+}

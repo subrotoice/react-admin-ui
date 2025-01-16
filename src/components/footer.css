@@ -1,0 +1,13 @@
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem;
+}
+
+.brand {
+  font-weight: bold;
+}
+
+.copyright {
+  font-size: 1.4rem;
+}
