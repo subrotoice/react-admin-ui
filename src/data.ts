@@ -171,7 +171,7 @@ export const chartBoxUser = {
   color: "#8884d8",
   icon: "/userIcon.svg",
   title: "Total Users",
-  number: "11.238",
+  number: "11.239",
   dataKey: "users",
   percentage: 45,
   chartData: [
@@ -308,6 +308,13 @@ export const barChartBoxVisit = {
     },
   ],
 };
+
+export const pieChartBox = [
+  { name: "Mobile", value: 400, color: "#0088FE" },
+  { name: "Desktop", value: 300, color: "#00C49F" },
+  { name: "Laptop", value: 300, color: "#FFBB28" },
+  { name: "Tablet", value: 200, color: "#FF8042" },
+];
 
 export const userRows = [
   {
