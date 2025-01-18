@@ -6,10 +6,14 @@ const Menu = () => {
   return (
     <div className="menu">
       {menu.map((menuItem) => (
-        <div className="item">
+        <div className="item" key={menuItem.id}>
           <span className="title">{menuItem.title}</span>
           {menuItem.listItems.map((submenuItem) => (
-            <Link to={submenuItem.url} className="listItem">
+            <Link
+              to={submenuItem.url}
+              key={submenuItem.id}
+              className="listItem"
+            >
               <img src={submenuItem.icon} alt="" />
               <span className="listItemTitle">{submenuItem.title}</span>
             </Link>

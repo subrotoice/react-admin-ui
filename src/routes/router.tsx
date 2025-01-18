@@ -5,6 +5,8 @@ import Users from "../pages/users/Users";
 import Layout from "../Layout";
 import Login from "../pages/login/Login";
 import "../styles/global.css";
+import Product from "../pages/product/Product";
+import User from "../pages/user/User";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +16,8 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/products", element: <Products /> },
       { path: "/users", element: <Users /> },
+      { path: "/product/:id", element: <Product /> },
+      { path: "/user/:id", element: <User /> },
     ],
   },
   { path: "/login", element: <Login /> },

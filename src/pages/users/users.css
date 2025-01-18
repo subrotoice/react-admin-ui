@@ -1,0 +1,16 @@
+.info {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.users h2 {
+  font-size: 2.5rem;
+}
+
+.info button {
+  padding: 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
