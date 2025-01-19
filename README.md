@@ -271,3 +271,191 @@ input {
   cursor: pointer;
 }
 ```
+
+### **Single.tsx - Good Example of reuseable component**
+
+Product.tsx, User.tsx
+
+```tsx
+import "./product.css";
+
+const Product = () => {
+  return (
+    <div className="product">
+      <Single {...singleProduct} />
+    </div>
+  );
+};
+
+export default Product;
+```
+
+```tsx
+import "./user.css";
+
+const User = () => {
+  return (
+    <div className="user">
+      <Single {...singleUser} />
+    </div>
+  );
+};
+
+export default User;
+```
+
+Single.tsx
+
+```tsx
+import "./single.css";
+
+interface Props {
+  id: number;
+  img?: string;
+  title: string;
+  info: object;
+  chart: {
+    dataKeys: { name: string; color: string }[];
+    data: object[];
+  };
+  activities?: { time: string; text: string }[];
+}
+
+const Single = ({ id, img, title, info, chart, activities }: Props) => {
+  return (
+    <div className="single">
+      <div className="view">
+        <div className="profile">
+          <div className="topInfo">
+            {img && <img src={img} alt="" />}
+            <h2>{title}</h2>
+            <button>Update</button>
+          </div>
+          <div className="details">
+            {Object.entries(info).map((item) => (
+              <div className="single__item" key={item[0]}>
+                <span className="itemTitle">{item[0]}: </span>
+                <span className="itemValue">{item[1]}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <hr />
+        {chart && (
+          <div className="elementChart">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart
+                width={500}
+                height={300}
+                data={chart.data}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                {chart.dataKeys.map((dataKey) => (
+                  <Line
+                    key={dataKey.name}
+                    type="monotone"
+                    dataKey={dataKey.name}
+                    stroke={dataKey.color}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        )}
+      </div>
+      <div className="activities">
+        <h2>Latest Activities</h2>
+        {activities && (
+          <ul>
+            {activities.map((activitie) => (
+              <li key={activitie.text}>
+                <div>
+                  <h3>{activitie.text}</h3>
+                  <time>{activitie.time}</time>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Single;
+```
+
+### **React Query (Easy)**
+
+```bash
+npm i @tanstack/react-query
+```
+
+main.tsx
+
+```jsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient(); // this line added
+// const queryClient = new QueryClient({
+//   defaultOptions: {
+//     queries: {
+//       retry: 4,
+//       refetchOnWindowFocus: false,
+//       refetchOnReconnect: false, // go offline and back onlinbe
+//       refetchOnMount: true, // When data is stale then it will refetch
+//     },
+//   },
+// }); // this line added
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
+  <React.StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </React.StrictMode>
+);
+```
+
+Users.tsx | If data is not stale refetch will not happen.
+
+```jsx
+const Users = () => {
+  const [open, setOpen] = useState(false);
+
+  const setOpenFn = (status: boolean) => {
+    setOpen(status);
+  };
+
+  const { isLoading, data } = useQuery({
+    queryKey: ["users"],
+    queryFn: () =>
+      fetch("http://localhost:8800/api/users").then((res) => res.json()),
+    staleTime: 2 * 60 * 1000, // 2 min (How long data is considired fresh, next time react query refetch data)
+  });
+
+  return (
+    <div className="users">
+      <div className="info">
+        <h2>Users</h2>
+        <button onClick={() => setOpen(true)}>Add New User</button>
+      </div>
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <DataTable slug="user" columns={columns} rows={data} />
+      )}
+      {open && <Add slug="user" columns={columns} setOpenProps={setOpenFn} />}
+    </div>
+  );
+};
+```

@@ -1,9 +1,9 @@
 import { GridColDef } from "@mui/x-data-grid";
-import DataTable from "../../components/dataTable/DataTable";
-import { userRows } from "../../data";
-import "./users.css";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Add from "../../components/add/Add";
+import DataTable from "../../components/dataTable/DataTable";
+import "./users.css";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -60,14 +60,25 @@ const Users = () => {
     setOpen(status);
   };
 
+  const { isLoading, data } = useQuery({
+    queryKey: ["users"],
+    queryFn: () =>
+      fetch("http://localhost:8800/api/users").then((res) => res.json()),
+    staleTime: 10000, // 60 seconds: Data is considered fresh for 1 minute
+  });
+
   return (
     <div className="users">
       <div className="info">
         <h2>Users</h2>
         <button onClick={() => setOpen(true)}>Add New User</button>
       </div>
-      <DataTable slug="user" columns={columns} rows={userRows} />
-      {open && <Add slug="user" columns={columns} setOpenProps={setOpenFn} />}
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <DataTable slug="users" columns={columns} rows={data} />
+      )}
+      {open && <Add slug="users" columns={columns} setOpenProps={setOpenFn} />}
     </div>
   );
 };

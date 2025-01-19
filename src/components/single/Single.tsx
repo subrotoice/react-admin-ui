@@ -23,7 +23,7 @@ interface Props {
 
 const Single = ({ id, img, title, info, chart, activities }: Props) => {
   return (
-    <div className="single">
+    <div className="single" key={id}>
       <div className="view">
         <div className="profile">
           <div className="topInfo">

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Add from "../../components/add/Add";
 import DataTable from "../../components/dataTable/DataTable";
-import { products } from "../../data";
 import { GridColDef } from "@mui/x-data-grid";
 import "./products.css";
+import { useQuery } from "@tanstack/react-query";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 90 },
@@ -60,15 +60,26 @@ const Products = () => {
     setOpen(status);
   };
 
+  const { isLoading, data: products } = useQuery({
+    queryKey: ["products"],
+    queryFn: () =>
+      fetch("http://localhost:8800/api/products").then((res) => res.json()),
+    staleTime: 10000, // 60 seconds: Data is considered fresh for 1 minute
+  });
+
   return (
     <div className="products">
       <div className="info">
-        <h2>Users</h2>
-        <button onClick={() => setOpen(true)}>Add New Products</button>
+        <h2>Products</h2>
+        <button onClick={() => setOpen(true)}>Add New Product</button>
       </div>
-      <DataTable slug="product" columns={columns} rows={products} />
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <DataTable slug="products" columns={columns} rows={products!} />
+      )}
       {open && (
-        <Add slug="product" columns={columns} setOpenProps={setOpenFn} />
+        <Add slug="products" columns={columns} setOpenProps={setOpenFn} />
       )}
     </div>
   );
