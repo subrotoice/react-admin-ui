@@ -8,10 +8,10 @@ const Navbar = () => {
         React Admin
       </div>
       <div className="rightIcons">
-        <img src="search.svg" alt="" />
-        <img src="app.svg" alt="" />
-        <img src="expand.svg" alt="" />
-        <img src="search.svg" alt="" />
+        <img src="search.svg" alt="" className="navbar__icon" />
+        <img src="app.svg" alt="" className="navbar__icon" />
+        <img src="expand.svg" alt="" className="navbar__icon" />
+        <img src="search.svg" alt="" className="navbar__icon" />
         <div className="notification">
           <img src="notifications.svg" alt="" />
           <span>1</span>

@@ -459,3 +459,137 @@ const Users = () => {
   );
 };
 ```
+
+**Mutation(Add, Update, Delete)** <br>
+Add an item.
+
+```jsx
+const Add = ({ slug, columns, setOpenProps }: Props) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: () =>
+      fetch(`http://localhost:8800/api/${slug}`, {
+        method: "post",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: 111,
+          img: "",
+          lastName: "World",
+          firstName: "Test",
+          email: "testme@gmail.com",
+          phone: "123 456 789",
+          createdAt: "01.02.2023",
+          verified: true,
+        }),
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [slug],
+      });
+    },
+  });
+
+  const handelSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    mutation.mutate();
+    setOpenProps(false);
+  };
+
+  return (
+    <div className="add">
+      <div className="modle">
+        <span className="close" onClick={() => setOpenProps(false)}>
+          x
+        </span>
+        <h2>Add new {slug}</h2>
+        <form onSubmit={handelSubmit} className="form">
+          {columns
+            .filter((item) => item.field !== "id" && item.field !== "img")
+            .map((column) => (
+              <div className="form__item" key={column.field}>
+                <label htmlFor={column.field}>{column.headerName}</label>
+                <input type={column.type} placeholder={column.field} />
+              </div>
+            ))}
+          <button className="form__button">Send</button>
+        </form>
+      </div>
+    </div>
+  );
+};
+```
+
+Delete Item
+
+```jsx
+const DataTable = ({ columns, rows, slug }: Props) => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (id: number) => {
+      return fetch(`http://localhost:8800/api/${slug}/${id}`, {
+        method: "delete",
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [slug],
+      });
+    },
+  });
+
+  const handelDelete = (id: number) => {
+    mutation.mutate(id);
+  };
+
+  const actionColumn: GridColDef = {
+    field: "action",
+    headerName: "Action",
+    width: 100,
+    renderCell: (params) => {
+      return (
+        <div className="action">
+          <Link to={`/${slug}/${params.row.id}`}>
+            <img src="view.svg" alt="" />
+          </Link>
+          <div className="delete" onClick={() => handelDelete(params.row.id)}>
+            <img src="delete.svg" alt="" />
+          </div>
+        </div>
+      );
+    },
+  };
+  return (
+    <div>
+      <DataGrid
+        style={{ width: "100%" }}
+        className="dataGrid"
+        rows={rows}
+        columns={[...columns, actionColumn]}
+        initialState={{
+          pagination: {
+            paginationModel: {
+              pageSize: 10,
+            },
+          },
+        }}
+        slots={{ toolbar: GridToolbar }}
+        slotProps={{
+          toolbar: {
+            showQuickFilter: true,
+            quickFilterProps: { debounceMs: 500 },
+          },
+        }}
+        pageSizeOptions={[5]}
+        checkboxSelection
+        disableRowSelectionOnClick
+        disableColumnFilter
+        disableDensitySelector
+        disableColumnSelector
+      />
+    </div>
+  );
+};
+```

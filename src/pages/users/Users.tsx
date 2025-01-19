@@ -6,7 +6,7 @@ import DataTable from "../../components/dataTable/DataTable";
 import "./users.css";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 90 },
+  { field: "id", headerName: "ID", width: 30 },
   {
     field: "img",
     headerName: "Avatar",
@@ -37,7 +37,7 @@ const columns: GridColDef[] = [
     field: "phone",
     type: "string",
     headerName: "Phone",
-    width: 200,
+    width: 100,
   },
   {
     field: "createdAt",
