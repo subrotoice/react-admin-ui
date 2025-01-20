@@ -63,7 +63,9 @@ const Users = () => {
   const { isLoading, data } = useQuery({
     queryKey: ["users"],
     queryFn: () =>
-      fetch("http://localhost:8800/api/users").then((res) => res.json()),
+      fetch("https://react-admin-api-omega.vercel.app/api/users").then((res) =>
+        res.json()
+      ),
     staleTime: 10000, // 60 seconds: Data is considered fresh for 1 minute
   });
 

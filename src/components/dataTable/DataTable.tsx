@@ -13,9 +13,12 @@ const DataTable = ({ columns, rows, slug }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (id: number) => {
-      return fetch(`http://localhost:8800/api/${slug}/${id}`, {
-        method: "delete",
-      });
+      return fetch(
+        `https://react-admin-api-omega.vercel.app/api/${slug}/${id}`,
+        {
+          method: "delete",
+        }
+      );
     },
     onSuccess: () => {
       queryClient.invalidateQueries({

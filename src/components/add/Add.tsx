@@ -13,7 +13,7 @@ const Add = ({ slug, columns, setOpenProps }: Props) => {
   const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () =>
-      fetch(`http://localhost:8800/api/${slug}`, {
+      fetch(`https://react-admin-api-omega.vercel.app/api/${slug}`, {
         method: "post",
         headers: {
           Accept: "application/json",
